@@ -16,31 +16,32 @@
 </head>
 <body>
   <div style="width:100%;min-width:680px;height:80px;line-height:80px;background:#484848;color:#EFEFEF;font-size:16px;font-weight:bold">
-    <div style="width:auto;margin-left:20px;float:left">今日任务</div>
+    <div style="width:auto;margin-left:20px;float:left">周报</div>
     <div style="width:auto;float:right;margin-right:30px">
-      <button style="border:1px" name="bb1" type="button" onclick="window.location='/task_per'">看看大家</button>
-      {% if group == 'admin' %}
-      <button style="border:1px" name="ba" type="button" onclick="window.location='/xiafa_task'" >下发任务</button>
-      <button style="border:1px" name="bbc" type="button" onclick="window.location='/shenpi'" >审批任务</button>
-      <button style="border:1px" name="bbc" type="button" onclick="window.location='/weekly_tasks?ago=0'" >查看周报</button>      
-      {% endif %}
-      <button style="border:1px" name="bb" type="button" onclick="window.location='/add_task'" >新增任务</button>
-      <button style="border:1px" name="bbb" type="button" onclick="window.location='/person'" >个人信息</button>
+      <button style="border:1px" name="bb" type="button" onclick="window.location='/task_per'">看看大家</button>
+      <input name="bb" type="button" id="ok1" onclick="window.location='/'" value="首页" />
+      <!-- <button style="border:1px" name="bb" type="button" onclick="window.location='/add_task'" >新增任务</button> -->
       <button style="border:1px" name="bc" type="button" onclick="window.location='/logout'" >注销</button>
-      {{username}}
+      {{user.chinese_name}}
     </div>
   </div>
-  <div style="width:1200px;margin: 30px auto; 0 auto">
+  <div style="width:1000px;margin:30px auto;margin-top:8px">
+    <div style="width:auto;margin-left:10px;float:left">{{date}}</div>
+<button style="border:1px;float:right;margin-right:10px;" name="bb" type="button" onclick="window.location='/weekly_tasks?ago={{ ago_week }}'">上一周</button>
+{% if next_week >= 0 %}
+<button style="border:1px;float:right;margin-right:10px;" name="bb" type="button" onclick="window.location='/weekly_tasks?ago={{ next_week }}'">下一周</button>
+{% endif %}
+  </div><div style="width:1000px;margin: 30px auto;">
       <table style="font-size: 14px;width:100%;border-collapse:collapse;border: 2px #dfdfdf solid;" border="1">
-        <tr><th height="30" width="12%"><div style="float:left;text-align:right">日期</div></th>
-          <th height="30" width="60%">描述</th><th>类型</th><th>进度</th><th>审批</th><th>评价</th><th width="10%">操作</th>
+        <tr><th height="30" width="12%"><div style="float:left;text-align:right">日期</div></th><th>执行人</th>
+          <th height="30" width="60%">描述</th><th>类型</th><th>进度</th><th>审批</th><th>评价</th>
         </tr>
         {% csrf_token %}
-        {% for task in task_info %}
+        {% for task in tasks %}
           <tr>
               <td height="30" width="330">
                 <div style="width:90px;float:left;text-align:left">{{task.IDD}}</div>
-              </td>
+              </td><td>{{task.user}}</td>
               <td>
                 {{task.info}}
                 <!-- 1、湖南广电运营支撑平台出口请求分析和质量拨测部分压力测试<br/> -->
@@ -52,9 +53,8 @@
                 {% elif task.pingjia == '1' %}
                 有瑕疵
                 {% else %}
-                {% endif %}
-              </td>
-              <td>
+                {% endif %}</td>
+              <!-- <td>
                 <input name="bb" type="button" id="ok1"
                 onclick="{if(confirm('确定完成?'))
                 {window.location='/task/complate?ID={{task.IDD}}';return true;}return false;}"
@@ -62,7 +62,7 @@
                 <input name="aa" type="button" id="ok"
                 onclick="{if(confirm('确定删除吗?'))
                 {window.location='/task/del?ID={{task.IDD}}';return true;}return false;}"
-                 value="删除" />  </td>
+                 value="删除" />  </td> -->
           </tr>
         {% endfor %}
       </table>

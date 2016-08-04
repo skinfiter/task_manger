@@ -12,7 +12,6 @@ import json
 from datetime import datetime
 from dateutil import tz
 import pytz
-from my_task import *
 admins=['zengfs@net-east.com']
 #outs={"liantong":"联通","dianxin":"电信","yidong":"移动"}
 do_time={"zao":["09:30","12:30"],

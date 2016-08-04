@@ -5,7 +5,7 @@ from web.models import User,information,Out
 from django import forms
 from django.template import RequestContext
 from data import *
-from datetime import datetime
+import datetime
 from dateutil import tz
 import pytz,time
 
@@ -126,7 +126,7 @@ def xiafa_task(request):
                 users=User.objects.exclude(groupname="admin")
                 return render_to_response('xiafa_task.html',{"users":users,"cuser":user},context_instance=RequestContext(request))
             elif request.method=="POST":
-                now=datetime.utcnow().replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Shanghai')).strftime('%Y%m%d%H%M%S')
+                now=datetime.datetime.utcnow().replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Shanghai')).strftime('%Y%m%d%H%M%S')
                 Uname=request.POST['user']
                 info=request.POST['info']
                 if request.POST['type']==0:Type="每日任务"
@@ -153,3 +153,23 @@ def person(request):
             return HttpResponseRedirect('/')
     except:
         return HttpResponseRedirect('/')
+
+def weekly_tasks(request):
+    if request.session:
+        ID=request.session.get("user_id")
+        if ID is None:return HttpResponseRedirect('/')
+        user=User.objects.filter(id=ID)[0]
+        if user.groupname=="admin":
+            if request.method=="GET":
+                weeks=int(request.GET['ago'])
+                week_c=int(time.strftime("%w"))
+                tasks=[]
+                today=datetime.date.today()
+                Ddate=(today-datetime.timedelta(days=(7*weeks))).strftime('%Y-%m-%d')
+                for i in range(week_c):
+                    _date=(today-datetime.timedelta(days=(i+7*weeks))).strftime('%Y%m%d')
+                    tasks.extend(task.objects.filter(IDD__contains=_date))
+                return render_to_response('weekly_tasks.html',{"user":user,"tasks":tasks,"ago_week":weeks+1,"next_week":weeks-1,"date":Ddate},context_instance=RequestContext(request))
+        else:
+            return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/')

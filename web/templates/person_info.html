@@ -8,13 +8,14 @@
   <div style="width:100%;min-width:680px;height:80px;line-height:80px;background:#484848;color:#EFEFEF;font-size:16px;font-weight:bold">
     <div style="width:auto;margin-left:20px;float:left">个人信息</div>
     <div style="width:auto;float:right;margin-right:30px">
+      <input name="bb" type="button" id="ok1" onclick="window.location='/'" value="首页" />
       {{username}}
     </div></div>
-    <div style="width:500px;margin: 30px auto; 0 auto">
+    <div style="width:400px;margin: 30px auto; 0 auto">
       <form method = 'post' action="/person" enctype="multipart/form-data">
         {% csrf_token %}
         <table style="width:100%" >
-            <tr><td width="100px">账号:</td>
+            <tr><td width="50px">账号:</td>
             <td >{{user.username}}</td>
                 </tr><tr>
                   <td>
@@ -22,7 +23,7 @@
                     <input value="{{user.chinese_name}}" type="text" id="in" name="chinese_name" style="width: 252px; color: rgb(153, 153, 153);"  tabindex="1" onfocus="javascript:on_uin_input_focus();">
             </td></tr>
             <tr><td>组：</td><td>{{user.groupname}}</td></tr>
-            <tr><td>Photo URL：</td><td>
+            <tr><td>头像：</td><td>
 <input value="{{user.photo_url}}" type="text" id="i2" name="photo_url" style="width: 252px; color: rgb(153, 153, 153);"  tabindex="1" onfocus="javascript:on_uin_input_focus();">
             </td></tr>
             <tr><td colspan="2" align="center"><input type="submit" value="提交"></td></tr>

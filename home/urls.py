@@ -21,7 +21,7 @@ from web import my_task
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$',views.login),
+    url(r'^$',my_task.login_mytask),
     url(r'^post',views.post_flow),
     url(r'^data.json$',views.get_json),
 #    url(r'^captcha/',captcha.urls),
@@ -35,4 +35,5 @@ urlpatterns = [
     url(r'^show$',my_task.show_per_all),
     url(r'^xiafa_task$',my_task.xiafa_task),
     url(r'^person$',my_task.person),
+    url(r'^weekly_tasks',my_task.weekly_tasks),
 ]
