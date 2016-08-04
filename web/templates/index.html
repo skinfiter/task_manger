@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="/static/css/index.css"/>
+	</head>
+	<body>
+		<header>
+
+		</header>
+		<hr style="margin-top: 0;" />
+		<div class="getdata">
+			<div>
+				日期：<input class="date-data" type="date" />
+			</div>
+			<div>值班负责人：
+				<select  class="name-data" name="username">
+					<option></option>
+					{% for user in users %}
+					<option>{{user}}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div>出口名称：
+				<select class="out-data" name="out">
+					<option></option>
+					{% for out,out_a in outs.items %}
+					<option>{{out_a}}</option>
+					{%  endfor %}
+				</select>
+			</div>
+			<div><button class="search">查询</button></div>
+		</div>
+		<table class="table-data" border="1">
+			<thead>
+				<tr>
+					<!--单选-->
+					<td>值班日期</td>
+					<td>值班负责人</td>
+					<td>出口名称</td>
+					<td>10:00</td>
+					<td>14:00</td>
+					<td>19:00</td>
+					<td>22:00</td>
+					<td>流量状态</td>
+				</tr>
+			</thead>
+			<tbody>
+
+			</tbody>
+		</table>
+
+
+		<script src="/static/js/jquery.min.js"></script>
+		<script>
+
+			$.getJSON('/data.json',function(data){
+
+				C('search')[0].onclick = function getObj(){
+					//当点击查询的时候，获取筛选的值
+					var obj = {
+						date:C('date-data')[0].value ,
+						out:C('out-data')[0].value ,
+						name:C('name-data')[0].value
+					};
+					//重新添加的时候，清空tbody里面的所有内容
+					C('table-data')[0].tBodies[0].innerHTML = null;
+					//对所需要筛选的值，遍历json进行筛选添加
+					for(var i=0;i<data.length;i++){
+						if( (obj.date == data[i]['date'] ||obj.date == '') && (obj.out == data[i]['out'] ||obj.out == '')&&(obj.name == data[i]['name'] ||obj.name == '')){
+							addData(data[i]);
+						}
+					}
+				};
+
+				//默认获取所有json数值
+				for(var i=0;i<data.length;i++){
+					addData(data[i]);
+				}
+			});
+
+
+			function addData(item){
+				var flag ;
+				// if(item['flow1'].date < "09:30" || item['flow1'].date > "10:30") item.flow1.date = "--";
+				// if(item['flow2'].date < "13:30" || item['flow2'].date > "14:30") item.flow2.date = "--";
+				// if(item['flow3'].date < "18:30" || item['flow3'].date > "19:30") item.flow3.date = "--";
+				// if(item['flow4'].date < "21:30" || item['flow4'].date > "22:30") item.flow3.date = "--";
+				if(item.status == "异常"){
+					flag = "waring";
+				}
+				var tpl = "<td>"+item.date+"</td>\
+							<td>"+item.name+"</td>\
+							<td>"+item.out+"</td>\
+							<td>"+item.flow1.num+"</td>\
+							<td>"+item.flow2.num+"</td>\
+							<td>"+item.flow3.num+"</td>\
+							<td>"+item.flow4.num+"</td>\
+							<td class="+flag+">"+item.status+"</td>";
+				var node = document.createElement('tr');
+				node.className = "tr-data";
+				node.innerHTML = tpl;
+
+				C('table-data')[0].tBodies[0].appendChild(node);
+
+			}
+			function C(select){
+				return document.getElementsByClassName(select);
+			}
+		</script>
+	</body>
+</html>

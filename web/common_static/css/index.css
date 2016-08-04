@@ -1,0 +1,92 @@
+*{
+	font-family: "微软雅黑";
+}
+body{
+	margin: 0;
+}
+
+header{
+	height: 60px;
+	background:  url(../img/logo.png)  ,url(../img/bg.png) #04363c;
+	background-position: left 8px,right center;
+    background-repeat: no-repeat;
+    background-size: 12%,86%;
+}
+
+
+header ul{
+	list-style: none;
+	float: right;
+}
+
+
+header ul>li{
+	width: 100px;
+	height: 100%;
+	text-align: center;
+	font-size: 20px;
+}
+
+.getdata{
+	display: flex;
+    width: 80%;
+    margin: 0 auto;
+    background: darkgray;
+    padding: 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    color: white;
+}
+
+.getdata>div{
+	flex: 1;
+}
+.getdata input{
+	width: 140px !important;
+}
+.getdata select,.getdata input{
+	width: 120px;
+    height: 25px;
+    border: 2px solid #999;
+    border-radius: 5px;
+    padding-left: 5px;
+    box-sizing: border-box;
+}
+.getdata button{
+    width: 80px;
+    border: 2px solid #407d94;
+    border-radius: 5px;
+    padding: 2px;
+    background: #407d94;
+    color: white;
+    box-shadow: 0 0 2px 2px #CCB;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+.table-data{
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    font-size: 14px;
+    text-align: center;
+    border-radius: 5px;
+    border: 2px #dfdfdf solid;
+    color: rgba(0,0,0,.8);
+}
+.table-data thead tr:first-child{
+    background: #999;
+    color: white;
+}
+.table-data td:first-of-type{
+	padding: 5px;
+}
+.table-data td{
+	padding: 10px 20px;
+}
+.table-data td.waring{
+    color: hotpink;
+    font-weight: bold;
+    font-family: "黑体";
+}

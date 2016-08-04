@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>登录</title>
+
+</head>
+ <style type="text/css">
+    body{
+        color: white;
+        background: #999;
+        padding: 0 5em;
+        margin: 0;
+        font-family: "微软雅黑";
+      }
+    h1{
+      color: white;
+      background: #ccc;
+      padding: 2em;
+      margin: 20px 0;
+      font-family: "微软雅黑";
+      border-radius: 50px 0;
+      box-shadow: 0 0 5px 5px rgba(0,0,0,.2);
+      text-align: center;
+      width:268px;
+      margin: 20px auto;
+    }
+    h2{color:#bf8;border-top:1px dotted #fff;margin-top:2em}
+    p{margin:1em 0}
+    form{
+      background: azure;
+      color: rgba(0,0,0,.7);
+      padding: 0 50px;
+      border-radius: 10px;
+      border: 5px solid white;
+      width: 258px;
+      margin: auto;
+    }
+    hr{
+      color: #ccc;
+      font-weight: bold;
+      padding: 20px;
+    }
+    input.input{
+      width: 60px !important;
+          margin-bottom: 10px;
+    }
+    input{
+      background: #ccc;
+      width: 190px;
+      height: 30px;
+      border: 0;
+      border-radius: 5px;
+      color: white;
+      font-size:   18px;
+      padding: 0 10px;
+    }
+    label{
+      width: 100px;
+      text-align: right;
+    }
+  </style>
+<body>
+<h1>登录页面</h1>
+<form method = 'post' enctype="multipart/form-data">
+   <p>
+     {% csrf_token %}
+   </p>
+    <p>
+      {{uf.as_p}}
+    </p>
+    <!-- <div class="form-group"> -->
+    <!-- <img onclick="this.setAttribute('src','/accounts/captcha/?nocache='+Math.random());" src="/accounts/captcha/" alt="Captcha"/> -->
+<!-- </div> -->
+    <!-- <hr> -->
+    <input class="input" type="submit" value = "OK" />
+</form>
+</body>
+</html>

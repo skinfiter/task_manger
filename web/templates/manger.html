@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- <script language="javascript">
+      function del(bbb) {
+          if (!confirm("确认要删除？")) {
+              window.event.returnValue = false;
+          }else{
+            var request = new XMLHttpRequest();
+            request.open( "GET", "/task/del?ID="+bbb);
+          }
+      }
+  </script> -->
+<title>审批</title>
+</head>
+<body>
+  <div style="width:100%;min-width:680px;height:80px;line-height:80px;background:#484848;color:#EFEFEF;font-size:16px;font-weight:bold">
+    <div style="width:auto;margin-left:20px;float:left">任务审批</div>
+    <div style="width:auto;float:right;margin-right:30px">
+      <input name="bb" type="button" id="ok1"
+      onclick="window.location='/'"
+       value="首页" />
+       <button style="border:1px" name="bc" type="button" onclick="window.location='/logout'" >注销</button>
+      {{username}}
+    </div>
+  </div>
+  <div style="width:1000px;margin: 30px auto; 0 auto">
+      <table style="font-size: 14px;width:100%;border-collapse:collapse;border: 2px #dfdfdf solid;" border="1">
+        <tr><th height="30" width="12%"><div style="float:left;text-align:right">日期</div></th>
+        <th width="8%">执行人</th> <th height="30" width="55%">描述</th><th>类型</th><th>进度</th><th>审批</th>
+        <th>缺陷</th><th>操作</th></tr>
+        {% for task in task_info %}
+          <tr>
+              <td height="30" width="330">
+                <div style="width:90px;float:left;text-align:left">{{task.IDD}}</div>
+              </td><td>{{task.user}}</td>
+              <td>
+                {{task.info}}
+                <!-- 1、湖南广电运营支撑平台出口请求分析和质量拨测部分压力测试<br/> -->
+                <!-- 2、拨测探针安卓手机端测试 -->
+              </td>
+              <td>{{task.type}}</td><td>{{task.status}}</td><td>{{task.shenpi}}</td>
+              <form method = 'post' action="/task/pass" enctype="multipart/form-data">
+                  {% csrf_token %}
+              <input name="id" value="{{task.id}}" type="hidden"/>
+              <td><select name="pingjia"><option value="0">否</option><option value="1">是</option></select></td>
+              <td>
+                <input name="bf" type="submit"
+                onclick="{if(confirm('确定通过?'))
+                {return true;}return false;}"
+                 value="通过" />
+                  </td>
+              </form>
+          </tr>
+        {% endfor %}
+      </table>
+  </div>
+</body>
+</html>

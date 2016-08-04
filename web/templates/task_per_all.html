@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- <script language="javascript">
+      function del(bbb) {
+          if (!confirm("确认要删除？")) {
+              window.event.returnValue = false;
+          }else{
+            var request = new XMLHttpRequest();
+            request.open( "GET", "/task/del?ID="+bbb);
+          }
+      }
+  </script> -->
+<title>今日任务</title>
+</head>
+<body>
+  <div style="width:100%;min-width:680px;height:80px;line-height:80px;background:#484848;color:#EFEFEF;font-size:16px;font-weight:bold">
+    <div style="width:auto;margin-left:20px;float:left">{{user.chinese_name}}的任务</div>
+    <div style="width:auto;float:right;margin-right:30px">
+      <button style="border:1px" name="bb" type="button" onclick="window.location='/task_per'">看看大家</button>
+      {% if cuser.groupname == 'admin' %}
+            <button style="border:1px" name="bcccb" type="button" onclick="window.location='/shenpi'" >审批任务</button>
+      {% endif %}
+      <!-- <button style="border:1px" name="bb" type="button" onclick="window.location='/add_task'" >新增任务</button> -->
+      <button style="border:1px" name="bc" type="button" onclick="window.location='/logout'" >注销</button>
+      {{cuser.chinese_name}}
+    </div>
+  </div>
+  <div style="width:1000px;margin: 30px auto; 0 auto">
+      <table style="font-size: 14px;width:100%;border-collapse:collapse;border: 2px #dfdfdf solid;" border="1">
+        <tr><th height="30" width="12%"><div style="float:left;text-align:right">日期</div></th>
+          <th height="30" width="60%">描述</th><th>类型</th><th>进度</th><th>审批</th><th>评价</th>
+        </tr>
+        {% csrf_token %}
+        {% for task in task_info %}
+          <tr>
+              <td height="30" width="330">
+                <div style="width:90px;float:left;text-align:left">{{task.IDD}}</div>
+              </td>
+              <td>
+                {{task.info}}
+                <!-- 1、湖南广电运营支撑平台出口请求分析和质量拨测部分压力测试<br/> -->
+                <!-- 2、拨测探针安卓手机端测试 -->
+              </td>
+              <td>{{task.Type}}</td><td>{{task.status}}</td><td>{{task.shenpi}}</td><td>
+                {% if task.pingjia == '0' %}
+                完美
+                {% elif task.pingjia == '1' %}
+                有瑕疵
+                {% else %}
+                {% endif %}</td>
+              <!-- <td>
+                <input name="bb" type="button" id="ok1"
+                onclick="{if(confirm('确定完成?'))
+                {window.location='/task/complate?ID={{task.IDD}}';return true;}return false;}"
+                 value="完成" />
+                <input name="aa" type="button" id="ok"
+                onclick="{if(confirm('确定删除吗?'))
+                {window.location='/task/del?ID={{task.IDD}}';return true;}return false;}"
+                 value="删除" />  </td> -->
+          </tr>
+        {% endfor %}
+      </table>
+  </div>
+</body>
+</html>

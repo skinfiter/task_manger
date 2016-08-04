@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+<title>下发任务</title>
+</head>
+<body>
+  <div style="width:100%;min-width:680px;height:80px;line-height:80px;background:#484848;color:#EFEFEF;font-size:16px;font-weight:bold">
+    <div style="width:auto;margin-left:20px;float:left">下发任务</div>
+    <div style="width:auto;float:right;margin-right:30px">
+      {{cuser.chinese_name}}
+    </div></div>
+    <div style="width:500px;margin: 30px auto; 0 auto">
+      <form method = 'post' action="/xiafa_task" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table style="width:100%" >
+            <tr><td style="width:10%;hight:200px">描述:</td>
+            <td style="height:200px">
+              <textarea name="info" rows="10" cols="55" ></textarea>
+              </td>
+                </tr><tr>
+                  <td style="width:15%">
+                <div style="float:left;text-align:left">类型:</div></td><td>
+                  <div style="height:30px;">
+    <select name="type"><option value="1">单次任务</option><option value="0">每日任务</option></select></div></td>
+            </td></tr><tr>
+              <td style="width:15%">
+            <div style="float:left;text-align:left">执行人:</div></td><td>
+              <div style="height:30px;"><select name="user">
+{% for user in users %}
+  <option value="{{user.chinese_name}}">{{user.chinese_name}}</option>
+{% endfor %}
+</select></div></td>
+        </td></tr>
+            <tr><td colspan="2" align="center"><input type="submit" value="提交"></td></tr>
+        </table>
+      </form>
+    </div>
+</body>
+</html>
