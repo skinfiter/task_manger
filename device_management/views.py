@@ -12,7 +12,7 @@ from datetime import datetime
 from dateutil import tz
 import pytz
 
-USERS=[1,]
+USERS=[1,2,3,4,5,6]
 
 def device_lists(request):
     ID=request.session.get("user_id")

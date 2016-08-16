@@ -37,13 +37,6 @@ urlpatterns = [
     url(r'^xiafa_task$',my_task.xiafa_task),
     url(r'^person$',my_task.person),
     url(r'^weekly_tasks',my_task.weekly_tasks),
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
     url(r'^my_weekly_tasks',my_task.login_mytask),
     url(r'^device_manager',DM_views.device_lists)
->>>>>>> parent of ef872ef... Revert "任务页面添加分页"
-=======
-    url(r'^device_manager',DM_views.device_lists)
->>>>>>> 62cbb9f918646253fe879cecb54cfe2d4291fb9a
 ]
