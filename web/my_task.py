@@ -14,7 +14,7 @@ class UserForm(forms.Form):
     password=forms.CharField(label="密码 ",widget=forms.PasswordInput())
 
 def login_mytask(request):
-    if request.method=='POST':
+    if request.method=='POST':                     ###登陆部分
         uf=UserForm(request.POST)
         if uf.is_valid():
             username=uf.cleaned_data['username']
@@ -22,27 +22,31 @@ def login_mytask(request):
             user=User.objects.filter(username=username,password=password)
             if user:
                 request.session['user_id'] = user[0].id
-                # if user[0].groupname=="admin":
-                    # users=[]
-                    # for user1 in User.objects.all():
-                        # if user1.groupname=="admin":continue
-                    # task_info=get_tasks()
-                    # return render_to_response("my__tasks.html",{"task_info":task_info,"username":user[0].chinese_name},context_instance=RequestContext(request))
-                # task_info=get_tasks(user[0].chinese_name)
                 task_info=sorted(task.objects.filter(user=user[0].chinese_name),key=lambda a:a.IDD,reverse=True)
                 task_info=sorted(task_info,key=lambda a:a.status,reverse=True)
                 return render_to_response("my_tasks.html",{"task_info":task_info,"username":user[0].chinese_name,"group":user[0].groupname},context_instance=RequestContext(request))
             else:
                 return HttpResponseRedirect('/')
-    else:
+    else:                        ###个人任务部分
         if request.session:
             ID=request.session.get('user_id')
             user=User.objects.filter(id=ID)
             if len(user)==1:
             #    task_info=get_tasks(user[0].chinese_name)
-                task_info=sorted(task.objects.filter(user=user[0].chinese_name),key=lambda a:a.IDD,reverse=True)
+                try:
+                    weeks=int(request.GET['ago'])
+                except:
+                    weeks=0
+                week_c=int(time.strftime("%w"))
+                tasks=[]
+                today=datetime.date.today()
+                Ddate=(today-datetime.timedelta(days=(7*weeks))).strftime('%Y-%m-%d')
+                for i in range(1,8):
+                    _date=(today-datetime.timedelta(days=(week_c-i+7*weeks))).strftime('%Y%m%d')
+                    tasks.extend(task.objects.filter(user=user[0].chinese_name,IDD__contains=_date))
+                task_info=sorted(tasks,key=lambda a:a.IDD,reverse=True)
                 task_info=sorted(task_info,key=lambda a:a.status,reverse=True)
-                return render_to_response("my_tasks.html",{"task_info":task_info,"username":user[0].chinese_name,'group':user[0].groupname},context_instance=RequestContext(request))
+                return render_to_response('my_tasks.html',{"username":user[0].chinese_name,'group':user[0].groupname,"task_info":task_info,"ago_week":weeks+1,"next_week":weeks-1,"date":Ddate},context_instance=RequestContext(request))
     uf=UserForm()
     return render_to_response('login.html',{'uf':uf},context_instance=RequestContext(request))
 
@@ -103,14 +107,24 @@ def show_per_all(request):
     if request.session:
         try:
             Uname=request.GET['user']
-            tasks=task.objects.filter(user=Uname)
-            tasks=sorted(tasks,key=lambda a:a.IDD,reverse=True)
-            tasks=sorted(tasks,key=lambda a:a.status,reverse=True)
             user=User.objects.filter(chinese_name=Uname)[0]
             ID=request.session.get('user_id')
             cuser=User.objects.filter(id=ID)[0]
-            # print cuser.groupname
-            return render_to_response("task_per_all.html",{"task_info":tasks,"user":user,"cuser":cuser},context_instance=RequestContext(request))
+
+            try:
+                weeks=int(request.GET['ago'])
+            except:
+                weeks=0
+            week_c=int(time.strftime("%w"))
+            tasks=[]
+            today=datetime.date.today()
+            Ddate=(today-datetime.timedelta(days=(7*weeks))).strftime('%Y-%m-%d')
+            for i in range(1,8):
+                _date=(today-datetime.timedelta(days=(week_c-i+7*weeks))).strftime('%Y%m%d')
+                tasks.extend(task.objects.filter(user=user.chinese_name,IDD__contains=_date))
+            task_info=sorted(tasks,key=lambda a:a.IDD,reverse=True)
+            task_info=sorted(task_info,key=lambda a:a.status,reverse=True)
+            return render_to_response('task_per_all.html',{"user":user,"task_info":task_info,"cuser":cuser,"ago_week":weeks+1,"next_week":weeks-1,"date":Ddate},context_instance=RequestContext(request))
         except Exception,e:
             print Exception,e
             pass
@@ -166,8 +180,8 @@ def weekly_tasks(request):
                 tasks=[]
                 today=datetime.date.today()
                 Ddate=(today-datetime.timedelta(days=(7*weeks))).strftime('%Y-%m-%d')
-                for i in range(week_c):
-                    _date=(today-datetime.timedelta(days=(i+7*weeks))).strftime('%Y%m%d')
+                for i in range(1,8):
+                    _date=(today-datetime.timedelta(days=(week_c-i+7*weeks))).strftime('%Y%m%d')
                     tasks.extend(task.objects.filter(IDD__contains=_date))
                 return render_to_response('weekly_tasks.html',{"user":user,"tasks":tasks,"ago_week":weeks+1,"next_week":weeks-1,"date":Ddate},context_instance=RequestContext(request))
         else:

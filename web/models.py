@@ -19,7 +19,7 @@ class GroupAdmin(admin.ModelAdmin):
     list_display=("groupName",)
 
 class UserAdmin(admin.ModelAdmin):
-    list_display=('username','password',"groupname","chinese_name")
+    list_display=('id','username','password',"groupname","chinese_name")
     search_fields=("groupname",)
 
 class Out(models.Model):

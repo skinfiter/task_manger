@@ -16,6 +16,7 @@
 </head>
 <body>
   <div style="width:100%;min-width:680px;height:80px;line-height:80px;background:#484848;color:#EFEFEF;font-size:16px;font-weight:bold">
+    {% block content1 %}
     <div style="width:auto;margin-left:20px;float:left">今日任务</div>
     <div style="width:auto;float:right;margin-right:30px">
       <button style="border:1px" name="bb1" type="button" onclick="window.location='/task_per'">看看大家</button>
@@ -30,14 +31,10 @@
       <button style="border:1px" name="bc" type="button" onclick="window.location='/logout'" >注销</button>
       {{username}}
     </div>
+    {% endblock %}
   </div>
-  <div style="width:1200px;margin: 12px auto;">
-    {% block content %}
-    <div style="float:left;margin-left:10px;">{{date}}</div>
-    <button style="border:1px;float:right;margin-right:10px;" name="bb" type="button" onclick="window.location='/my_weekly_tasks?ago={{ ago_week }}'">上一周</button>
-    {% if next_week >= 0 %}
-    <button style="border:1px;float:right;margin-right:10px;" name="bb" type="button" onclick="window.location='/my_weekly_tasks?ago={{ next_week }}'">下一周</button>
-    {% endif %}
+  <div style="width:1200px;margin: 30px auto; 0 auto">
+    {% block content2 %}
       <table style="font-size: 14px;width:100%;border-collapse:collapse;border: 2px #dfdfdf solid;" border="1">
         <tr><th height="30" width="12%"><div style="float:left;text-align:right">日期</div></th>
           <th height="30" width="60%">描述</th><th>类型</th><th>进度</th><th>审批</th><th>评价</th><th width="10%">操作</th>

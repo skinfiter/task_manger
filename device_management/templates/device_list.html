@@ -1,0 +1,39 @@
+<<<<<<< HEAD
+{% extends 'base.html' %}
+
+{% block content1 %}
+<div style="width:auto;margin-left:20px;float:left">设备管理</div>
+<div style="width:auto;float:right;margin-right:30px">
+  <button style="border:1px" name="bb1" type="button" onclick="window.location='/'">首页</button>
+  <button style="border:1px" name="bc" type="button" onclick="window.location='/logout'" >注销</button>
+  {{username}}
+</div>
+{% endblock %}
+{% block content2 %}
+
+
+{% endblock %}
+=======
+<html>
+<head>
+<title>设备管理</title>
+</head>
+<body>
+  <div style="width:100%;min-width:680px;height:80px;line-height:80px;background:#484848;color:#EFEFEF;font-size:16px;font-weight:bold">
+    <div style="width:auto;margin-left:20px;float:left">今日任务</div>
+    <div style="width:auto;float:right;margin-right:30px">
+      <button style="border:1px" name="bb1" type="button" onclick="window.location='/task_per'">看看大家</button>
+      {% if group == 'admin' %}
+      <button style="border:1px" name="ba" type="button" onclick="window.location='/xiafa_task'" >下发任务</button>
+      <button style="border:1px" name="bbc" type="button" onclick="window.location='/shenpi'" >审批任务</button>
+      <button style="border:1px" name="bbc" type="button" onclick="window.location='/weekly_tasks?ago=0'" >查看周报</button>
+      {% endif %}
+      <button style="border:1px" name="bb" type="button" onclick="window.location='/add_task'" >新增任务</button>
+      <button style="border:1px" name="bbb" type="button" onclick="window.location='/person'" >个人信息</button>
+      <button style="border:1px" name="bc" type="button" onclick="window.location='/logout'" >注销</button>
+      {{username}}
+    </div>
+  </div>
+</body>
+</html>
+>>>>>>> 62cbb9f918646253fe879cecb54cfe2d4291fb9a

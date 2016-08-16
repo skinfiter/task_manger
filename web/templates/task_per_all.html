@@ -12,7 +12,7 @@
           }
       }
   </script> -->
-<title>今日任务</title>
+<title>{{user.chinese_name}}的任务</title>
 </head>
 <body>
   <div style="width:100%;min-width:680px;height:80px;line-height:80px;background:#484848;color:#EFEFEF;font-size:16px;font-weight:bold">
@@ -28,6 +28,11 @@
     </div>
   </div>
   <div style="width:1000px;margin: 30px auto; 0 auto">
+    <div style="float:left;margin-left:10px;">{{date}}</div>
+    <button style="border:1px;float:right;margin-right:10px;" name="bb" type="button" onclick="window.location='/show?user={{user.chinese_name}}&ago={{ ago_week }}'">上一周</button>
+    {% if next_week >= 0 %}
+    <button style="border:1px;float:right;margin-right:10px;" name="bb" type="button" onclick="window.location='/show?user={{user.chinese_name}}&ago={{ next_week }}'">下一周</button>
+    {% endif %}
       <table style="font-size: 14px;width:100%;border-collapse:collapse;border: 2px #dfdfdf solid;" border="1">
         <tr><th height="30" width="12%"><div style="float:left;text-align:right">日期</div></th>
           <th height="30" width="60%">描述</th><th>类型</th><th>进度</th><th>审批</th><th>评价</th>
