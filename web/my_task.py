@@ -14,6 +14,9 @@ class UserForm(forms.Form):
     password=forms.CharField(label="密码 ",widget=forms.PasswordInput())
 
 def login_mytask(request):
+    week_c=int(time.strftime("%w"))
+    tasks=[]
+    today=datetime.date.today()
     if request.method=='POST':                     ###登陆部分
         uf=UserForm(request.POST)
         if uf.is_valid():
@@ -22,9 +25,19 @@ def login_mytask(request):
             user=User.objects.filter(username=username,password=password)
             if user:
                 request.session['user_id'] = user[0].id
-                task_info=sorted(task.objects.filter(user=user[0].chinese_name),key=lambda a:a.IDD,reverse=True)
+                weeks=0
+                s_Ddate=(today-datetime.timedelta(days=(week_c-1+7*weeks))).strftime('%Y-%m-%d')
+                e_Ddate=(today-datetime.timedelta(days=(week_c-7+7*weeks))).strftime('%Y-%m-%d')
+                Ddate=s_Ddate+" -- "+e_Ddate
+                for i in range(1,8):
+                    _date=(today-datetime.timedelta(days=(week_c-i+7*weeks))).strftime('%Y%m%d')
+                    tasks.extend(task.objects.filter(user=user[0].chinese_name,IDD__contains=_date))
+                task_info=sorted(tasks,key=lambda a:a.IDD,reverse=True)
                 task_info=sorted(task_info,key=lambda a:a.status,reverse=True)
-                return render_to_response("my_tasks.html",{"task_info":task_info,"username":user[0].chinese_name,"group":user[0].groupname},context_instance=RequestContext(request))
+                return render_to_response('my_tasks.html',{"username":user[0].chinese_name,'group':user[0].groupname,"task_info":task_info,"ago_week":weeks+1,"next_week":weeks-1,"date":Ddate},context_instance=RequestContext(request))
+                # task_info=sorted(task.objects.filter(user=user[0].chinese_name),key=lambda a:a.IDD,reverse=True)
+                # task_info=sorted(task_info,key=lambda a:a.status,reverse=True)
+                # return render_to_response("my_tasks.html",{"task_info":task_info,"username":user[0].chinese_name,"group":user[0].groupname},context_instance=RequestContext(request))
             else:
                 return HttpResponseRedirect('/')
     else:                        ###个人任务部分
@@ -37,10 +50,9 @@ def login_mytask(request):
                     weeks=int(request.GET['ago'])
                 except:
                     weeks=0
-                week_c=int(time.strftime("%w"))
-                tasks=[]
-                today=datetime.date.today()
-                Ddate=(today-datetime.timedelta(days=(7*weeks))).strftime('%Y-%m-%d')
+                s_Ddate=(today-datetime.timedelta(days=(week_c-1+7*weeks))).strftime('%Y-%m-%d')
+                e_Ddate=(today-datetime.timedelta(days=(week_c-7+7*weeks))).strftime('%Y-%m-%d')
+                Ddate=s_Ddate+" -- "+e_Ddate
                 for i in range(1,8):
                     _date=(today-datetime.timedelta(days=(week_c-i+7*weeks))).strftime('%Y%m%d')
                     tasks.extend(task.objects.filter(user=user[0].chinese_name,IDD__contains=_date))
@@ -118,7 +130,9 @@ def show_per_all(request):
             week_c=int(time.strftime("%w"))
             tasks=[]
             today=datetime.date.today()
-            Ddate=(today-datetime.timedelta(days=(7*weeks))).strftime('%Y-%m-%d')
+            s_Ddate=(today-datetime.timedelta(days=(week_c-1+7*weeks))).strftime('%Y-%m-%d')
+            e_Ddate=(today-datetime.timedelta(days=(week_c-7+7*weeks))).strftime('%Y-%m-%d')
+            Ddate=s_Ddate+" -- "+e_Ddate
             for i in range(1,8):
                 _date=(today-datetime.timedelta(days=(week_c-i+7*weeks))).strftime('%Y%m%d')
                 tasks.extend(task.objects.filter(user=user.chinese_name,IDD__contains=_date))
@@ -179,7 +193,9 @@ def weekly_tasks(request):
                 week_c=int(time.strftime("%w"))
                 tasks=[]
                 today=datetime.date.today()
-                Ddate=(today-datetime.timedelta(days=(7*weeks))).strftime('%Y-%m-%d')
+                s_Ddate=(today-datetime.timedelta(days=(week_c-1+7*weeks))).strftime('%Y-%m-%d')
+                e_Ddate=(today-datetime.timedelta(days=(week_c-7+7*weeks))).strftime('%Y-%m-%d')
+                Ddate=s_Ddate+" -- "+e_Ddate
                 for i in range(1,8):
                     _date=(today-datetime.timedelta(days=(week_c-i+7*weeks))).strftime('%Y%m%d')
                     tasks.extend(task.objects.filter(IDD__contains=_date))
