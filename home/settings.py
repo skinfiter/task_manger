@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'web',
     'device_management',
+    'faults_record',
 #    'captcha',
 ]
 

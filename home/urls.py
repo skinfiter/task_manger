@@ -18,6 +18,7 @@ from django.contrib import admin
 from web import views
 from web import my_task
 from device_management import views as DM_views
+from faults_record import views as FR_views
 #import captcha
 
 urlpatterns = [
@@ -38,5 +39,7 @@ urlpatterns = [
     url(r'^person$',my_task.person),
     url(r'^weekly_tasks',my_task.weekly_tasks),
     url(r'^my_weekly_tasks',my_task.login_mytask),
-    url(r'^device_manager',DM_views.device_lists)
+    url(r'^device_manager',DM_views.device_lists),
+    url(r'^show_faults$',FR_views.show_faults),
+    url(r'^add_fault$',FR_views.add_fault),
 ]

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+      html,body{
+        padding: 0;margin: 0
+      }
+      table{ border-collapse:collapse; }
+      td{ border:#ccc solid 1px; padding:5px 5px 0 5px; }
+      input[type="text"]{
+        width: 140px;
+      }
+      select{
+        width: 60px
+      }
+    </style>
+</head>
+<body>
+<div style="width:100%;min-width:680px;height:80px;line-height:80px;background:#484848;color:#EFEFEF;font-size:16px;font-weight:bold">
+  <div style="width:auto;margin-left:20px;float:left">提交数据</div>
+  <div style="width:auto;float:right;margin-right:30px">{{username}}</div>
+</div>
+{% csrf_token %}
+<div style="width:660px;margin: 30px auto; 0 auto">
+{{title}}
+</div>
+
+<span id="tiao">3</span><a href="javascript:countDown"></a>秒后自动跳转……<meta http-equiv=refresh content=3;url='/show_faults'</ul>
+
+<!--脚本开始-->
+<script language="javascript" type="">
+function countDown(secs){
+  tiao.innerText=secs;
+  if(--secs>0)
+   setTimeout("countDown("+secs+")",1000);
+  }
+  countDown(3);
+</script>
+</body>
+</html>
