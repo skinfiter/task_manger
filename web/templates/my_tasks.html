@@ -19,8 +19,8 @@
     <div style="width:auto;margin-left:20px;float:left">今日任务</div>
     <div style="width:auto;float:right;margin-right:30px">
       <button style="border:1px" name="bb1" type="button" onclick="window.location='/task_per'">看看大家</button>
-      {% if group == 'admin' %}
       <button style="border:1px" name="ba" type="button" onclick="window.location='/device_manager'" >设备管理</button>
+      {% if group == 'admin' %}
       <button style="border:1px" name="ba" type="button" onclick="window.location='/xiafa_task'" >下发任务</button>
       <button style="border:1px" name="bbc" type="button" onclick="window.location='/shenpi'" >审批任务</button>
       <button style="border:1px" name="bbc" type="button" onclick="window.location='/weekly_tasks?ago=0'" >查看周报</button>
