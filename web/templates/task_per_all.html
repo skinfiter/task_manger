@@ -2,16 +2,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!-- <script language="javascript">
-      function del(bbb) {
-          if (!confirm("确认要删除？")) {
-              window.event.returnValue = false;
-          }else{
-            var request = new XMLHttpRequest();
-            request.open( "GET", "/task/del?ID="+bbb);
-          }
-      }
-  </script> -->
 <title>{{user.chinese_name}}的任务</title>
 </head>
 <body>
@@ -28,10 +18,20 @@
     </div>
   </div>
   <div style="width:1000px;margin: 30px auto; 0 auto">
+    {% if type == 1 %}
     <div style="float:left;margin-left:10px;">{{date}}</div>
     <button style="border:1px;float:right;margin-right:10px;" name="bb" type="button" onclick="window.location='/show?user={{user.chinese_name}}&ago={{ ago_week }}'">上一周</button>
     {% if next_week >= 0 %}
     <button style="border:1px;float:right;margin-right:10px;" name="bb" type="button" onclick="window.location='/show?user={{user.chinese_name}}&ago={{ next_week }}'">下一周</button>
+    {% endif %}
+        <button style="border:1px;float:right;margin-right:10px;" name="bb" type="button" onclick="window.location='/show_by_month?user={{user.chinese_name}}&ago=0'">按月查询</button>
+    {% else %}
+    <div style="float:left;margin-left:10px;">{{date}}</div>
+    <button style="border:1px;float:right;margin-right:10px;" name="bb" type="button" onclick="window.location='/show_by_month?user={{user.chinese_name}}&ago={{ ago_week }}'">上一月</button>
+    {% if next_week >= 0 %}
+    <button style="border:1px;float:right;margin-right:10px;" name="bb" type="button" onclick="window.location='/show_by_month?user={{user.chinese_name}}&ago={{ next_week }}'">下一月</button>
+    {% endif %}
+          <button style="border:1px;float:right;margin-right:10px;" name="bb" type="button" onclick="window.location='/show?user={{user.chinese_name}}&ago=0'">按周查询</button>
     {% endif %}
       <table style="font-size: 14px;width:100%;border-collapse:collapse;border: 2px #dfdfdf solid;" border="1">
         <tr><th height="30" width="12%"><div style="float:left;text-align:right">日期</div></th>

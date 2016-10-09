@@ -122,7 +122,6 @@ def show_per_all(request):
             user=User.objects.filter(chinese_name=Uname)[0]
             ID=request.session.get('user_id')
             cuser=User.objects.filter(id=ID)[0]
-
             try:
                 weeks=int(request.GET['ago'])
             except:
@@ -138,7 +137,36 @@ def show_per_all(request):
                 tasks.extend(task.objects.filter(user=user.chinese_name,IDD__contains=_date))
             task_info=sorted(tasks,key=lambda a:a.IDD,reverse=True)
             task_info=sorted(task_info,key=lambda a:a.status,reverse=True)
-            return render_to_response('task_per_all.html',{"user":user,"task_info":task_info,"cuser":cuser,"ago_week":weeks+1,"next_week":weeks-1,"date":Ddate},context_instance=RequestContext(request))
+            return render_to_response('task_per_all.html',{"user":user,"task_info":task_info,"cuser":cuser,"ago_week":weeks+1,"next_week":weeks-1,"date":Ddate,"type":1},context_instance=RequestContext(request))
+        except Exception,e:
+            print Exception,e
+            pass
+    return HttpResponseRedirect('/')
+
+def show_per_all_month(request):
+    if request.session:
+        try:
+            Uname=request.GET['user']
+            user=User.objects.filter(chinese_name=Uname)[0]
+            ID=request.session.get('user_id')
+            cuser=User.objects.filter(id=ID)[0]
+            try:
+                months=int(request.GET['ago'])
+            except:
+                months=0
+            tasks=[]
+            today=datetime.date.today()
+            year=today.year
+            month=today.month-months
+            while month<1:
+                year-=1
+                month+=12
+            Ddate=datetime.datetime(year,month,1).strftime('%Y年%m月')
+            DDdate=datetime.datetime(year,month,1).strftime('%Y-%m')
+            tasks.extend(task.objects.filter(user=user.chinese_name,IDD__contains=DDdate))
+            task_info=sorted(tasks,key=lambda a:a.IDD,reverse=True)
+            task_info=sorted(task_info,key=lambda a:a.status,reverse=True)
+            return render_to_response('task_per_all.html',{"user":user,"task_info":task_info,"cuser":cuser,"ago_week":months+1,"next_week":months-1,"date":Ddate,"type":2},context_instance=RequestContext(request))
         except Exception,e:
             print Exception,e
             pass

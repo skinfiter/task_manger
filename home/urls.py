@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^task/pass',my_task.bypass),
     url(r'^task_per$',my_task.task_per),
     url(r'^show$',my_task.show_per_all),
+    url(r'^show_by_month$',my_task.show_per_all_month),
     url(r'^xiafa_task$',my_task.xiafa_task),
     url(r'^person$',my_task.person),
     url(r'^weekly_tasks',my_task.weekly_tasks),
