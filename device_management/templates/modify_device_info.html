@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+<title>修改设备信息</title>
+</head>
+<body>
+  <div style="width:100%;min-width:680px;height:80px;line-height:80px;background:#484848;color:#EFEFEF;font-size:16px;font-weight:bold">
+    <div style="width:auto;margin-left:20px;float:left">修改设备信息</div>
+    <div style="width:auto;float:right;margin-right:30px">
+      {{username}}
+    </div></div>
+    <div style="width:520px;margin: 30px auto; 0 auto">
+      <form method = 'post' action="/modify_device_info" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table style="width:100%" >
+          <input value="{{device.id}}" type="hidden" name="number" maxlength="100" >
+          <tr><td style="width:25%">设备品牌:</td><td style="height:5px"><input value="{{device.brands}}" type="text" name="brands" maxlength="100" ></td></tr>
+          <tr><td style="width:25%">设备型号:</td><td style="height:5px"><input value="{{device.MODEL}}" type="text" name="MODEL" maxlength="100" ></td></tr>
+          <tr><td style="width:25%">设备序列号:</td><td style="height:5px"><input value="{{device.serial_numbers}}" type="text" name="serial_numbers" maxlength="100" ></td></tr>
+          <tr><td style="width:25%">CPU:</td><td style="height:5px"><input value="{{device.cpu}}" type="text" name="cpu" maxlength="100" ></td></tr>
+          <tr><td style="width:25%">内存:</td><td style="height:5px"><input value="{{device.ram}}" type="text" name="ram" maxlength="100" ></td></tr>
+          <tr><td style="width:25%">存储:</td><td style="height:5px"><input value="{{device.storage}}" type="text" name="storage" maxlength="100" ></td></tr>
+          <tr><td style="width:25%">网卡:</td><td style="height:5px"><input value="{{device.nic}}" type="text" name="nic" maxlength="100" ></td></tr>
+          <tr><td style="width:25%">设备数量:</td><td style="height:5px"><input value="{{device.count}}" type="text" name="count" maxlength="100" ></td></tr>
+          <tr><td style="width:25%">设备所有者:</td><td style="height:5px"><input value="{{device.attri}}" type="text" name="attri" maxlength="100" ></td></tr>
+          <tr><td style="width:25%">局点:</td><td><div style="height:25px;">
+            <select name="point">
+              {% for point in points %}
+                <option value="{{point.id}}" {% if point.point_name == device.point %} selected="selected" {% endif %}>{{point.point_name}}</option>
+              {% endfor %}
+            </select></div></td></tr>
+          <tr><td style="width:25%">设备用途:</td><td style="height:5px"><input value="{{device.usage}}" type="text" name="usage" maxlength="100" ></td></tr>
+          <tr><td style="width:25%;hight:200px">备注：</td><td style="height:200px"><textarea name="info" rows="10" cols="55" >{{device.info}}</textarea></td></tr>
+          <tr><td colspan="2" align="center"><input type="submit" onclick="{if(confirm('确认提交修改？'))
+          {window.location='/show_faults';return true;}return false;}" value="提交修改"></td></tr>
+        </table>
+      </form>
+    </div>
+</body>
+</html>

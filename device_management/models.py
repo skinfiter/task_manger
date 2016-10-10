@@ -20,6 +20,6 @@ class device_info(models.Model):
     create_user=models.CharField(max_length=64)
 
 class device_info_Admin(admin.ModelAdmin):
-    list_display=("create_date","brands","MODEL","serial_numbers","cpu","ram","storage","nic","count","attri","point","usage","info","create_user")
+    list_display=("id","create_date","brands","MODEL","serial_numbers","cpu","ram","storage","nic","count","attri","point","usage","info","create_user")
 
 admin.site.register(device_info,device_info_Admin)

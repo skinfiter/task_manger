@@ -42,6 +42,7 @@ urlpatterns = [
     url(r'^my_weekly_tasks',my_task.login_mytask),
     url(r'^device_manager',DM_views.device_lists),
     url(r'^add_device_info',DM_views.add_device_info),
+    url(r'^modify_device_info',DM_views.modify_device_info),
     url(r'^show_faults$',FR_views.show_faults),
     url(r'^add_fault$',FR_views.add_fault),
 ]

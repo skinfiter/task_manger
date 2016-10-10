@@ -47,3 +47,40 @@ def add_device_info(request):
             return HttpResponseRedirect("/")
     else:
         return HttpResponseRedirect("/")
+
+def modify_device_info(request):
+    if request.method=="GET":
+        try:
+            if User.objects.filter(id=request.session.get("user_id")) is None:return HttpResponseRedirect("/")
+            device=device_info.objects.filter(id=request.GET["number"])[0]
+            points=POINT.objects.all()
+            return render_to_response("modify_device_info.html",{"device":device,"points":points},context_instance=RequestContext(request))
+        except Exception,e:
+            print(Exception,e)
+            return HttpResponseRedirect("/")
+    elif request.method=="POST":
+        try:
+            user=User.objects.filter(id=request.session.get("user_id"))
+            if  user is None:return HttpResponseRedirect("/")
+            create_date=datetime.utcnow().replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Shanghai')).strftime('%Y-%m-%d')
+            brands=request.POST["brands"]
+            MODEL=request.POST["MODEL"]
+            serial_numbers=request.POST["serial_numbers"]
+            cpu=request.POST["cpu"]
+            ram=request.POST["ram"]
+            storage=request.POST["storage"]
+            nic=request.POST["nic"]
+            count=int(request.POST["count"])
+            attri=request.POST["attri"]
+            point=POINT.objects.filter(id=request.POST["point"])[0].point_name
+            usage=request.POST["usage"]
+            info=request.POST["info"]
+            create_user=user[0].chinese_name
+            device_info.objects.create(create_date=create_date,brands=brands,MODEL=MODEL,serial_numbers=serial_numbers,cpu=cpu,ram=ram,storage=storage,nic=nic,count=count,attri=attri,point=point,usage=usage,info=info,create_user=create_user)
+            device_info.objects.filter(id=request.POST["number"])[0].delete()
+            return HttpResponseRedirect("/device_manager")
+        except Exception,e:
+            print(Exception,e)
+            return HttpResponseRedirect("/")
+    else:
+        return HttpResponseRedirect("/")

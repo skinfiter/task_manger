@@ -11,13 +11,14 @@
 {% endblock %}
 {% block content2 %}
 <table style="font-size: 14px;width:100%;border-collapse:collapse;border: 2px #dfdfdf solid;" border="1">
-  <tr><th height="30" width="5%"><div style="float:left;text-align:right">登记日期</div></th>
-    <th height="30" width="5%">品牌</th><th width="8%">型号</th><th width="8%">序列号</th><th width="8%">cpu</th><th width="8%">内存</th>
-    <th width="8%">硬盘</th><th width="8%">网卡</th><th width="3%">数量</th><th width="4%">所有者</th><th width="5%">局点</th><th width="5%">用途</th><th>备注</th>
+  <tr><th height="30" width="3%">操作</th><th height="30" width="5%">登记日期</th>
+    <th height="30" width="4%">品牌</th><th width="8%">型号</th><th width="8%">序列号</th><th width="8%">cpu</th><th width="8%">内存</th>
+    <th width="15%">硬盘</th><th width="5%">网卡</th><th width="3%">数量</th><th width="4%">所有者</th><th width="5%">局点</th><th width="5%">用途</th><th>备注</th>
   </tr>
   {% csrf_token %}
   {% for device in devices %}
     <tr>
+        <td><button style="border:1px" name="bbv1" type="button" onclick="window.location='/modify_device_info?number={{device.id}}'">编辑</button></td>
         <td height="30">{{ device.create_date }}</td>
         <td>{{device.brands}}</td>
         <td>{{device.MODEL}}</td><td>{{device.serial_numbers}}</td><td>{{device.cpu}}</td><td>{{device.ram}}</td><td>{{device.storage}}</td><td>{{device.nic}}</td><td style="text-align:center;">{{device.count}}</td>

@@ -162,7 +162,7 @@ def show_per_all_month(request):
                 year-=1
                 month+=12
             Ddate=datetime.datetime(year,month,1).strftime('%Y年%m月')
-            DDdate=datetime.datetime(year,month,1).strftime('%Y-%m')
+            DDdate=datetime.datetime(year,month,1).strftime('%Y%m')
             tasks.extend(task.objects.filter(user=user.chinese_name,IDD__contains=DDdate))
             task_info=sorted(tasks,key=lambda a:a.IDD,reverse=True)
             task_info=sorted(task_info,key=lambda a:a.status,reverse=True)

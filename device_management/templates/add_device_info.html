@@ -2,11 +2,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>新增任务</title>
+<title>新增设备</title>
 </head>
 <body>
   <div style="width:100%;min-width:680px;height:80px;line-height:80px;background:#484848;color:#EFEFEF;font-size:16px;font-weight:bold">
-    <div style="width:auto;margin-left:20px;float:left">新增任务</div>
+    <div style="width:auto;margin-left:20px;float:left">新增设备</div>
     <div style="width:auto;float:right;margin-right:30px">
       {{username}}
     </div></div>
@@ -31,7 +31,7 @@
             </select></div></td></tr>
           <tr><td style="width:25%">设备用途:</td><td style="height:5px"><input type="text" name="usage" maxlength="100" ></td></tr>
           <tr><td style="width:25%;hight:200px">备注：</td><td style="height:200px"><textarea name="info" rows="10" cols="55" ></textarea></td></tr>
-          <tr><td colspan="2" align="center"><input type="submit" onclick="{if(confirm('提交后不可修改删除，确认提交？'))
+          <tr><td colspan="2" align="center"><input type="submit" onclick="{if(confirm('确认提交？'))
           {window.location='/show_faults';return true;}return false;}" value="提交"></td></tr>
         </table>
       </form>
