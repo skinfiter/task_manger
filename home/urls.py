@@ -45,4 +45,5 @@ urlpatterns = [
     url(r'^modify_device_info',DM_views.modify_device_info),
     url(r'^show_faults$',FR_views.show_faults),
     url(r'^add_fault$',FR_views.add_fault),
+#    url(r'^download$',my_task.download),
 ]

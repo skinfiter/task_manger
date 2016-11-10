@@ -27,6 +27,7 @@
   </div>
   <div style="width:1000px;margin:30px auto;margin-top:8px">
     <div style="width:auto;margin-left:10px;float:left">{{date}}</div>
+<button style="border:1px;float:right;margin-right:10px;" name="bb" type="button" onclick="window.location='/weekly_tasks?ago={{ week }}&download=true'">导出表</button>
 <button style="border:1px;float:right;margin-right:10px;" name="bb" type="button" onclick="window.location='/weekly_tasks?ago={{ ago_week }}'">上一周</button>
 {% if next_week >= 0 %}
 <button style="border:1px;float:right;margin-right:10px;" name="bb" type="button" onclick="window.location='/weekly_tasks?ago={{ next_week }}'">下一周</button>

@@ -1,6 +1,7 @@
 #encoding=utf-8
 from django.shortcuts import render,render_to_response
 from web.models import User
+from web.download import *
 from faults_record.models import fault_info,point,product
 import pytz,time,datetime
 from django.template import RequestContext
@@ -28,7 +29,16 @@ def show_faults(request):
         fault_infos=fault_info.objects.filter(create_time__contains=DDdate)
 #        task_info=sorted(tasks,key=lambda a:a.IDD,reverse=True)
 #        task_info=sorted(task_info,key=lambda a:a.status,reverse=True)
-        return render_to_response('show_faults.html',{"fault_infos":fault_infos,"ago_week":weeks+1,"next_week":weeks-1,"date":Ddate},context_instance=RequestContext(request))
+        try:
+            if request.GET['download']=='true':
+                tables=[['create_time','上报时间'],['point','局点名称'],['product','产品'],['fault_device',
+                    '故障设备ip'],['fault_type','故障类型'],['info','故障信息描述'],['method','处理方法'],['deal_chinese_name','处理人']]
+                file_name="故障记录"+Ddate+'.xlsx'
+                return createdownloadfile(tables,fault_infos,file_name)
+        except Exception,e:
+            print Exception,e
+            pass
+        return render_to_response('show_faults.html',{"fault_infos":fault_infos,"ago_week":weeks+1,"week":weeks,"next_week":weeks-1,"date":Ddate},context_instance=RequestContext(request))
     except Exception,e:
         return HttpResponseRedirect('/')
 

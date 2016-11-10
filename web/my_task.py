@@ -8,6 +8,8 @@ from data import *
 import datetime
 from dateutil import tz
 import pytz,time
+from download import *
+from django.http import StreamingHttpResponse
 
 class UserForm(forms.Form):
     username=forms.CharField(label="账号 ",max_length=200)
@@ -34,7 +36,7 @@ def login_mytask(request):
                     tasks.extend(task.objects.filter(user=user[0].chinese_name,IDD__contains=_date))
                 task_info=sorted(tasks,key=lambda a:a.IDD,reverse=True)
                 task_info=sorted(task_info,key=lambda a:a.status,reverse=True)
-                return render_to_response('my_tasks.html',{"username":user[0].chinese_name,'group':user[0].groupname,"task_info":task_info,"ago_week":weeks+1,"next_week":weeks-1,"date":Ddate},context_instance=RequestContext(request))
+                return render_to_response('my_tasks.html',{"username":user[0].chinese_name,'group':user[0].groupname,"task_info":task_info,"ago_week":weeks+1,"week":weeks,"next_week":weeks-1,"date":Ddate},context_instance=RequestContext(request))
                 # task_info=sorted(task.objects.filter(user=user[0].chinese_name),key=lambda a:a.IDD,reverse=True)
                 # task_info=sorted(task_info,key=lambda a:a.status,reverse=True)
                 # return render_to_response("my_tasks.html",{"task_info":task_info,"username":user[0].chinese_name,"group":user[0].groupname},context_instance=RequestContext(request))
@@ -52,13 +54,21 @@ def login_mytask(request):
                     weeks=0
                 s_Ddate=(today-datetime.timedelta(days=(week_c-1+7*weeks))).strftime('%Y-%m-%d')
                 e_Ddate=(today-datetime.timedelta(days=(week_c-7+7*weeks))).strftime('%Y-%m-%d')
-                Ddate=s_Ddate+" -- "+e_Ddate
+                Ddate=s_Ddate+"--"+e_Ddate
                 for i in range(1,8):
                     _date=(today-datetime.timedelta(days=(week_c-i+7*weeks))).strftime('%Y%m%d')
                     tasks.extend(task.objects.filter(user=user[0].chinese_name,IDD__contains=_date))
                 task_info=sorted(tasks,key=lambda a:a.IDD,reverse=True)
                 task_info=sorted(task_info,key=lambda a:a.status,reverse=True)
-                return render_to_response('my_tasks.html',{"username":user[0].chinese_name,'group':user[0].groupname,"task_info":task_info,"ago_week":weeks+1,"next_week":weeks-1,"date":Ddate},context_instance=RequestContext(request))
+                try:
+                    if request.GET['download']=='true':
+                        task_tables=[['IDD','日期'],['info','描述'],['Type','类型'],['status','进度'],['shenpi','审批'],['pingjia','评价']]
+                        file_name="我的任务"+Ddate+'.xlsx'
+                        return createdownloadfile(task_tables,task_info,file_name)
+                except Exception,e:
+                    print Exception,e
+                    pass
+                return render_to_response('my_tasks.html',{"username":user[0].chinese_name,'group':user[0].groupname,"task_info":task_info,"ago_week":weeks+1,"week":weeks,"next_week":weeks-1,"date":Ddate},context_instance=RequestContext(request))
     uf=UserForm()
     return render_to_response('login.html',{'uf':uf},context_instance=RequestContext(request))
 
@@ -227,7 +237,29 @@ def weekly_tasks(request):
                 for i in range(1,8):
                     _date=(today-datetime.timedelta(days=(week_c-i+7*weeks))).strftime('%Y%m%d')
                     tasks.extend(task.objects.filter(IDD__contains=_date))
-                return render_to_response('weekly_tasks.html',{"user":user,"tasks":tasks,"ago_week":weeks+1,"next_week":weeks-1,"date":Ddate},context_instance=RequestContext(request))
+                try:
+                    if request.GET['download']=='true':
+                        task_tables=[['IDD','日期'],['user','执行人'],['info','描述'],['Type','类型'],['status','进度'],['shenpi','审批'],['pingjia','评价']]
+                        file_name="周报"+Ddate+'.xlsx'
+                        return createdownloadfile(task_tables,tasks,file_name)
+                except Exception,e:
+                    print Exception,e
+                return render_to_response('weekly_tasks.html',{"user":user,"tasks":tasks,"ago_week":weeks+1,'week':weeks,"next_week":weeks-1,"date":Ddate},context_instance=RequestContext(request))
         else:
             return HttpResponseRedirect('/')
     return HttpResponseRedirect('/')
+
+def download(request):
+    createdownloadfile()
+    file_name='/tmp/task.xlsx'
+    def file_iterator(file_name, chunk_size=512):
+        with open(file_name) as f:
+            while True:
+                c = f.read(chunk_size)
+                if c:
+                    yield c
+                else:
+                    break
+    response=StreamingHttpResponse(file_iterator(file_name),content_type='application/vnd.ms-excel')
+    response['Content-Disposition']='attachment; filename="我的任务.xlsx"'
+    return response
