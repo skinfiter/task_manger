@@ -44,14 +44,14 @@ def login_1(request):
                     for user1 in User.objects.all():
                         if user1.username =='admin':continue
                         users.append(user1.chinese_name)
-                    return render_to_response("index.html",{"outs":get_outs(user[0].groupname),"users":users},context_instance=RequestContext(request))
-                return render_to_response("home.html",{"outs":get_outs(user[0].groupname),"username":user[0].chinese_name},context_instance=RequestContext(request))
+                    return render(request,"index.html",{"outs":get_outs(user[0].groupname),"users":users})
+                return render(request,"home.html",{"outs":get_outs(user[0].groupname),"username":user[0].chinese_name})
             else:
                 return HttpResponseRedirect('/')
     else:
         uf=UserForm()
 #        captcha=CaptchaField()
-    return render_to_response('login.html',{'uf':uf},context_instance=RequestContext(request))
+    return render(request,'login.html',{'uf':uf})
 
 @csrf_exempt
 def post_flow(request):
@@ -65,7 +65,7 @@ def post_flow(request):
     elif cmp(_time,do_time["wan"][1])<1 and cmp(_time,do_time["wan"][0])>-1:pass
     elif cmp(_time,do_time["wan1"][1])<1 and cmp(_time,do_time["wan1"][0])>-1:pass
     else:
-        return render_to_response('home0.html',{"title":"现在不是填报的时间"},context_instance=RequestContext(request))
+        return render(request,'home0.html',{"title":"现在不是填报的时间"})
     _user=request.POST["user"]
     user=User.objects.get(username=_user)
     for out,out_a in get_outs(user.groupname).iteritems():
@@ -76,7 +76,8 @@ def post_flow(request):
         flow[out]=aa
         information.objects.create(user=_user,date=now,out_name=out,out=flow[out]["flow"],status=flow[out]["status"])
 #        except: pass
-    return render_to_response( 'home0.html',{"title":"提交成功"},context_instance=RequestContext(request))
+    return render(request,'home0.html',{"title":"提交成功"})
+    # return render_to_response( 'home0.html',{"title":"提交成功"},context_instance=RequestContext(request))
 
 def get_date(request):
     if request.method == 'POST':
@@ -89,7 +90,7 @@ def get_date(request):
             information.objects.create(user=user,date=date,out=out,status=status)
         else:
             form = InformationForm()
-    return render(request, 'home.html', {'form': form},context_instance=RequestContext(request))
+    return render(request, 'home.html', {'form': form})
 
 def sort2json(aa,d,u,out):
     result={"date":d,"name":u,"out":out,"status":"正常",
@@ -158,15 +159,18 @@ def add_task(request):
             return HttpResponseRedirect('/')
         except Exception,e:
             print Exception,e
-            return render_to_response('home0.html',{"title":"添加任务失败，返回任务界面"},context_instance=RequestContext(request))
+            return render(request,'home0.html',{"title":"添加任务失败，返回任务界面"})
+            # return render_to_response('home0.html',{"title":"添加任务失败，返回任务界面"},context_instance=RequestContext(request))
     else:
         if request.session:
             ID=request.session.get('user_id')
             user=User.objects.filter(id=ID)
-            return render_to_response("add_task.html",{"username":user[0].chinese_name},context_instance=RequestContext(request))
+            return render(request,"add_task.html",{"username":user[0].chinese_name})
+            # return render_to_response("add_task.html",{"username":user[0].chinese_name},context_instance=RequestContext(request))
         else:
             uf=UserForm()
-            return render_to_response('login.html',{'uf':uf},context_instance=RequestContext(request))
+            return render(request,'login.html',{'uf':uf})
+            # return render_to_response('login.html',{'uf':uf},context_instance=RequestContext(request))
 
 def complate_task(request):
     if request.session:
@@ -178,7 +182,8 @@ def complate_task(request):
             task1.save()
             return HttpResponseRedirect('/')
     uf=UserForm()
-    return render_to_response('login.html',{'uf':uf},context_instance=RequestContext(request))
+    return render(request,'login.html',{'uf':uf})
+    # return render_to_response('login.html',{'uf':uf},context_instance=RequestContext(request))
 
 def del_task(request):
     if request.session:
@@ -194,4 +199,5 @@ def del_task(request):
             task1.delete()
             return HttpResponseRedirect('/')
     uf=UserForm()
-    return render_to_response('login.html',{'uf':uf},context_instance=RequestContext(request))
+    return render(request,'login.html',{'uf':uf})
+    # return render_to_response('login.html',{'uf':uf},context_instance=RequestContext(request))

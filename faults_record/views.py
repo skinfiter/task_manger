@@ -38,7 +38,8 @@ def show_faults(request):
         except Exception,e:
             print Exception,e
             pass
-        return render_to_response('show_faults.html',{"fault_infos":fault_infos,"ago_week":weeks+1,"week":weeks,"next_week":weeks-1,"date":Ddate},context_instance=RequestContext(request))
+        return render(request,'show_faults.html',{"fault_infos":fault_infos,"ago_week":weeks+1,"week":weeks,"next_week":weeks-1,"date":Ddate})
+        # return render_to_response('show_faults.html',{"fault_infos":fault_infos,"ago_week":weeks+1,"week":weeks,"next_week":weeks-1,"date":Ddate},context_instance=RequestContext(request))
     except Exception,e:
         return HttpResponseRedirect('/')
 
@@ -61,7 +62,8 @@ def add_fault(request):
             return HttpResponseRedirect('/show_faults')
         except Exception,e:
             print Exception,e
-            return render_to_response('faild.html',{"title":"添加故障信息失败，返回任务记录界面"},context_instance=RequestContext(request))
+            return render(request,'faild.html',{"title":"添加故障信息失败，返回任务记录界面"})
+            # return render_to_response('faild.html',{"title":"添加故障信息失败，返回任务记录界面"},context_instance=RequestContext(request))
     else:
         if request.session:
             ID=request.session.get('user_id')
@@ -69,7 +71,8 @@ def add_fault(request):
             if len(user)<1:return HttpResponseRedirect('/')
             points=point.objects.all()
             products=product.objects.all()
-            return render_to_response("add_fault.html",{"username":user[0].chinese_name,"points":points,"products":products},context_instance=RequestContext(request))
+            return render(request,"add_fault.html",{"username":user[0].chinese_name,"points":points,"products":products})
+            # return render_to_response("add_fault.html",{"username":user[0].chinese_name,"points":points,"products":products},context_instance=RequestContext(request))
         else:
             uf=UserForm()
-            return render_to_response('login.html',{'uf':uf},context_instance=RequestContext(request))
+            return render(request,'login.html',{'uf':uf})

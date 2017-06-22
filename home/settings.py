@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'web',
     'device_management',
     'faults_record',
+    'tools',
 #    'captcha',
 ]
 

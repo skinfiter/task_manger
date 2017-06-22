@@ -17,6 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from web import views
 from web import my_task
+from tools import views as tools_views
 from device_management import views as DM_views
 from faults_record import views as FR_views
 #import captcha
@@ -45,5 +46,6 @@ urlpatterns = [
     url(r'^modify_device_info',DM_views.modify_device_info),
     url(r'^show_faults$',FR_views.show_faults),
     url(r'^add_fault$',FR_views.add_fault),
+    url(r'^decrypte$',tools_views.password_decrypte),
 #    url(r'^download$',my_task.download),
 ]

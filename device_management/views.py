@@ -16,12 +16,14 @@ def device_lists(request):
     ID=request.session.get("user_id")
 #    if ID not in USERS: return HttpResponseRedirect('/')
     devices=device_info.objects.all()
-    return render_to_response("device_list.html",{"devices":devices},context_instance=RequestContext(request))
+    return render(request,"device_list.html",{"devices":devices})
+    # return render_to_response("device_list.html",{"devices":devices},context_instance=RequestContext(request))
 
 def add_device_info(request):
     if request.method=="GET":
         points=POINT.objects.all()
-        return  render_to_response("add_device_info.html",{"points":points},context_instance=RequestContext(request))
+        return  render(request,"add_device_info.html",{"points":points})
+        # return  render_to_response("add_device_info.html",{"points":points},context_instance=RequestContext(request))
     elif request.method=="POST":
         try:
             ID=request.session.get('user_id')
@@ -54,7 +56,8 @@ def modify_device_info(request):
             if User.objects.filter(id=request.session.get("user_id")) is None:return HttpResponseRedirect("/")
             device=device_info.objects.filter(id=request.GET["number"])[0]
             points=POINT.objects.all()
-            return render_to_response("modify_device_info.html",{"device":device,"points":points},context_instance=RequestContext(request))
+            return render(request,"modify_device_info.html",{"device":device,"points":points})
+            # return render_to_response("modify_device_info.html",{"device":device,"points":points},context_instance=RequestContext(request))
         except Exception,e:
             print(Exception,e)
             return HttpResponseRedirect("/")

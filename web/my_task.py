@@ -36,7 +36,8 @@ def login_mytask(request):
                     tasks.extend(task.objects.filter(user=user[0].chinese_name,IDD__contains=_date))
                 task_info=sorted(tasks,key=lambda a:a.IDD,reverse=True)
                 task_info=sorted(task_info,key=lambda a:a.status,reverse=True)
-                return render_to_response('my_tasks.html',{"username":user[0].chinese_name,'group':user[0].groupname,"task_info":task_info,"ago_week":weeks+1,"week":weeks,"next_week":weeks-1,"date":Ddate},context_instance=RequestContext(request))
+                data_aa={"username":user[0].chinese_name,'group':user[0].groupname,"task_info":task_info,"ago_week":weeks+1,"week":weeks,"next_week":weeks-1,"date":Ddate}
+                return render(request,'my_tasks.html',data_aa)
                 # task_info=sorted(task.objects.filter(user=user[0].chinese_name),key=lambda a:a.IDD,reverse=True)
                 # task_info=sorted(task_info,key=lambda a:a.status,reverse=True)
                 # return render_to_response("my_tasks.html",{"task_info":task_info,"username":user[0].chinese_name,"group":user[0].groupname},context_instance=RequestContext(request))
@@ -68,9 +69,12 @@ def login_mytask(request):
                 except Exception,e:
                     print Exception,e
                     pass
-                return render_to_response('my_tasks.html',{"username":user[0].chinese_name,'group':user[0].groupname,"task_info":task_info,"ago_week":weeks+1,"week":weeks,"next_week":weeks-1,"date":Ddate},context_instance=RequestContext(request))
+                #return render_to_response('my_tasks.html',{"username":user[0].chinese_name,'group':user[0].groupname,"task_info":task_info,"ago_week":weeks+1,"week":weeks,"next_week":weeks-1,"date":Ddate},context_instance=RequestContext(request))
+                data_aa={"username":user[0].chinese_name,'group':user[0].groupname,"task_info":task_info,
+                        "ago_week":weeks+1,"week":weeks,"next_week":weeks-1,"date":Ddate}
+                return render(request,'my_tasks.html',data_aa)
     uf=UserForm()
-    return render_to_response('login.html',{'uf':uf},context_instance=RequestContext(request))
+    return render(request,'login.html',{'uf':uf})
 
 def shenpi(request):
     if request.session:
@@ -85,7 +89,7 @@ def shenpi(request):
             task_info=[]
             for task1 in tasks:
                 task_info.append({'id':task1.id,'IDD':task1.IDD,'info':task1.info,'type':task1.Type,'status':task1.status,'shenpi':task1.shenpi,'user':task1.user})
-            return render_to_response("manger.html",{"task_info":task_info,"username":user.chinese_name},context_instance=RequestContext(request))
+            return render(request,"manger.html",{"task_info":task_info,"username":user.chinese_name})
     else:
         return HttpResponseRedirect('/')
 
@@ -121,7 +125,7 @@ def task_per(request):
                 users.append(user)
             tasks=task.objects.filter(status="未完成")
             # if len(tasks)>10:tasks=tasks[0:10]
-            return render_to_response('task_list.html',{"users":users,"tasks":tasks,"username":username},context_instance=RequestContext(request))
+            return render(request,'task_list.html',{"users":users,"tasks":tasks,"username":username})
         except:pass
     return HttpResponseRedirect('/')
 
@@ -147,7 +151,8 @@ def show_per_all(request):
                 tasks.extend(task.objects.filter(user=user.chinese_name,IDD__contains=_date))
             task_info=sorted(tasks,key=lambda a:a.IDD,reverse=True)
             task_info=sorted(task_info,key=lambda a:a.status,reverse=True)
-            return render_to_response('task_per_all.html',{"user":user,"task_info":task_info,"cuser":cuser,"ago_week":weeks+1,"next_week":weeks-1,"date":Ddate,"type":1},context_instance=RequestContext(request))
+            data_aa={"user":user,"task_info":task_info,"cuser":cuser,"ago_week":weeks+1,"next_week":weeks-1,"date":Ddate,"type":1}
+            return render(request,'task_per_all.html',data_aa)
         except Exception,e:
             print Exception,e
             pass
@@ -176,7 +181,7 @@ def show_per_all_month(request):
             tasks.extend(task.objects.filter(user=user.chinese_name,IDD__contains=DDdate))
             task_info=sorted(tasks,key=lambda a:a.IDD,reverse=True)
             task_info=sorted(task_info,key=lambda a:a.status,reverse=True)
-            return render_to_response('task_per_all.html',{"user":user,"task_info":task_info,"cuser":cuser,"ago_week":months+1,"next_week":months-1,"date":Ddate,"type":2},context_instance=RequestContext(request))
+            return render(request,'task_per_all.html',{"user":user,"task_info":task_info,"cuser":cuser,"ago_week":months+1,"next_week":months-1,"date":Ddate,"type":2})
         except Exception,e:
             print Exception,e
             pass
@@ -190,7 +195,7 @@ def xiafa_task(request):
             print request.method
             if request.method=="GET":
                 users=User.objects.exclude(groupname="admin")
-                return render_to_response('xiafa_task.html',{"users":users,"cuser":user},context_instance=RequestContext(request))
+                return render(request,'xiafa_task.html',{"users":users,"cuser":user})
             elif request.method=="POST":
                 now=datetime.datetime.utcnow().replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Shanghai')).strftime('%Y%m%d%H%M%S')
                 Uname=request.POST['user']
@@ -209,12 +214,12 @@ def person(request):
         ID=request.session.get("user_id")
         user=User.objects.filter(id=ID)[0]
         if request.method=="GET":
-            return render_to_response('person_info.html',{"user":user},context_instance=RequestContext(request))
+            return render(request,'person_info.html',{"user":user})
         elif request.method=="POST":
             user.chinese_name=request.POST["chinese_name"]
             user.photo_url=request.POST['photo_url']
             user.save()
-            return render_to_response('person_info.html',{"user":user,"TYPE":"1"},context_instance=RequestContext(request))
+            return render(request,'person_info.html',{"user":user,"TYPE":"1"})
         else:
             return HttpResponseRedirect('/')
     except:
@@ -244,7 +249,7 @@ def weekly_tasks(request):
                         return createdownloadfile(task_tables,tasks,file_name)
                 except Exception,e:
                     print Exception,e
-                return render_to_response('weekly_tasks.html',{"user":user,"tasks":tasks,"ago_week":weeks+1,'week':weeks,"next_week":weeks-1,"date":Ddate},context_instance=RequestContext(request))
+                return render(request,'weekly_tasks.html',{"user":user,"tasks":tasks,"ago_week":weeks+1,'week':weeks,"next_week":weeks-1,"date":Ddate})
         else:
             return HttpResponseRedirect('/')
     return HttpResponseRedirect('/')

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html>
+<head>
+<title>CRT密码翻译</title>
+</head>
+<body>
+  <div style="width:100%;min-width:680px;height:80px;line-height:80px;background:#484848;color:#EFEFEF;font-size:16px;font-weight:bold">
+    <div style="width:auto;margin-left:20px;float:left">CRT密码翻译</div>
+    <div style="width:auto;float:right;margin-right:30px">
+      <input name="bb" type="button" id="ok1" onclick="window.location='/'" value="首页" />
+    </div></div>
+    <div style="width:450px;margin: 30px auto; 0 auto">
+    {% if passwd == "" %}
+      <form method = 'post' action="/decrypte" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table style="width:100%" >
+            <tr>
+                  <td>
+                密文:</td><td>
+                    <input type="text" id="in" name="enctype_passwd" style="width: 352px; color: rgb(153, 153, 153);"  tabindex="1" onfocus="javascript:on_uin_input_focus();">
+            </td>
+    <td colspan="2" align="center"><input type="submit" value="解密"></td></tr>
+        </table>
+      </form>
+    {% else %}
+        <p colspan="2" align="center">密码:{{passwd}}</p>
+    {% endif %}
+    </div>
+</body>
+</html>
