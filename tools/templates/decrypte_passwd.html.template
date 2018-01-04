@@ -6,7 +6,7 @@
 </head>
 <body>
   <div style="width:100%;min-width:680px;height:80px;line-height:80px;background:#484848;color:#EFEFEF;font-size:16px;font-weight:bold">
-    <div style="width:auto;margin-left:20px;float:left">CRT密码翻译</div>
+    <div style="width:auto;margin-left:20px;float:left">CRT密码解密</div>
     <div style="width:auto;float:right;margin-right:30px">
       <input name="bb" type="button" id="ok1" onclick="window.location='/'" value="首页" />
     </div></div>

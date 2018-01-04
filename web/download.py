@@ -4,7 +4,8 @@ import os
 import xlwt
 from django.http import StreamingHttpResponse
 
-def createdownloadfile(table,table_info,filename):
+
+def createdownloadfile(table, table_info, filename):
     workbook=xlwt.Workbook(encoding='utf-8')
     booksheet=workbook.add_sheet("test1",cell_overwrite_ok=True)
     row_c=len(table)

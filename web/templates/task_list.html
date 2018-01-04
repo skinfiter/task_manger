@@ -2,40 +2,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>看看大家伙</title>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <title>看看大家伙</title>
 </head>
 <body style="text-align:center">
-  <div style="width:100%;min-width:680px;height:80px;line-height:80px;background:#484848;color:#EFEFEF;font-size:16px;font-weight:bold">
-    <div style="width:auto;margin-left:20px;float:left"><font size='5'>运营部高效工作管理系统</font></div>
+<div style="width:100%;min-width:680px;height:80px;line-height:80px;background:#484848;color:#EFEFEF;font-size:16px;font-weight:bold">
+    <div style="width:auto;margin-left:20px;float:left"><h2>运营部高效工作管理系统</h2></div>
     <div style="width:auto;float:right;margin-right:30px">
-      <input name="bb" type="button" id="ok1"
-      onclick="window.location='/'"
-       value="首页" />
-       <button style="border:1px" name="bc" type="button" onclick="window.location='/logout'" >注销</button>
-      {{username}}
+        <input class="btn btn-xs btn-default" name="bb" type="button" id="ok1"
+               onclick="window.location='/'"
+               value="首页"/>
+        <button class="btn btn-xs btn-default" name="bc" type="button" onclick="window.location='/logout'">注销</button>
+        {{ username }}
     </div>
-  </div>
-<div style="min-height:700px;margin:0 auto;width:100%;min-width:350px;text-align:left;margin-top:5px;background: rgba(144, 46, 113, 0.1);">
-{% for user in users %}
-<div style="width:400px;height:220px;margin:5px;float:left;border:1px solid #9e9e9e;margin-left:30px;">
-  <div style="width:100px;height:220px;margin:5px;float:left;">
-    <a href="/show?user={{user.chinese_name}}">
-	<img src="{{user.photo_url}}" width="90px" height="125px" border="0" alt="" id="img-mwsf-2" class="photo" />
-</a>  <div style="width:90px;text-align:center;;margin-top:5px;"><font size="5" >{{user.chinese_name}}</font></div>
 </div>
-<div style="width:280px;height:310px;margin:5px;float:left;">
-<table style="font-size: 14px;width:100%;border-collapse:collapse;border: 2px #dfdfdf solid;" border="1">
-{% for task in tasks %}
-{% if task.user == user.chinese_name %}
-
-<tr><td>{{task.info}}</td></tr>
-
-{% endif %}
-{% endfor %}
-</table>
-</div>
-</div>
-{% endfor %}
+<div class="container theme-showcase" role="main"
+     style="-webkit-column-width: 325px;-moz-column-width: 325px;column-width: 325px;break-inside: avoid;">
+    {% for user in users %}
+        <div class="well"
+             style="width:100%;height:auto;margin:5px;float:left;border:1px solid #9e9e9e;column-break-inside:avoid;-webkit-column-break-inside:avoid;">
+            <div style="width:100%;height:125px;margin:5px;float:left;">
+                <div style="float: left;width:180px;text-align:left;"><h2>{{ user.chinese_name }}</h2></div>
+                <div style="float: right;width:95px;margin-right: 10px;">
+                    <a href="/show?user={{ user.chinese_name }}"><img src="{{ user.photo_url }}" class="img-thumbnail"
+                                                                      width="90px" height="125px"
+                                                                      border="1" alt="" id="img-mwsf-2" class="photo"/></a>
+                </div>
+            </div>
+            <div style="width: 100%;float: right">
+                <div class="list-group">
+                    {% for task in tasks %}
+                        {% if task.user == user.chinese_name %}
+                            <a class="list-group-item" style="word-break:break-all;text-align:left;">{{ task.info }}</a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 </div>
 </body>
 </html>

@@ -194,7 +194,7 @@ def del_task(request):
             if task1.createUserGroup=="admin" and user[0].groupname=="admin":
                 task1.delete()
                 return HttpResponseRedirect('/')
-            if task1.shenpi == u"已通过" or task1.createUserGroup=="admin":
+            if task1.shenpi == u"已通过" or task1.createUserGroup == "admin":
                 return HttpResponseRedirect('/')
             task1.delete()
             return HttpResponseRedirect('/')
